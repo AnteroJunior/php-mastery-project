@@ -19,14 +19,14 @@ It's crucial to define the appropriate visibility for class attributes and metho
 
 Correct use of visibility and encapsulation ensures the integrity and security of class data, making the code more maintainable and scalable.
 
-### Magic method __construct()
+### Magic method \_\_construct()
 
-This method allow us to create a instance of a class by passing arguments to it. 
-It is important and helpfull, avoiding code duplication and saving effort. 
+This method allow us to create a instance of a class by passing arguments to it.
+It is important and helpfull, avoiding code duplication and saving effort.
 
-__construct is called when we invoke the class with `new` operator.
+\_\_construct is called when we invoke the class with `new` operator.
 
-``` php
+```php
 class User {
     public $name;
     public $surname;
@@ -47,7 +47,7 @@ class User {
 
 It is also good to remember that PHP 8 brought us a new feature called constructor property promotion: by providing the visibility keyword for the constructor arguments we can combine them with property declarations and assign at the same time. Let's check it out.
 
-``` php
+```php
 class User {
 
     public function __construct(public $name, public $surname, public $age) {}
@@ -59,14 +59,14 @@ class User {
 }
 
 ```
+
 Now we have a compact class and we are able to focus on the logic.
 
 ### Named arguments
 
 As our class grow in complexity we might need to create default values to some parameters as it follows:
 
-
-``` php
+```php
 class User {
 
     public function __construct(public $name = '', public $surname = 'Junior', public $age = 18) {}
@@ -85,3 +85,63 @@ What if we want to leave $surname as it is? Easy! PHP 8 have introduced named ar
 `new User(name: 'Antero', age: 26);`
 
 With that we created an User object with name = Antero, age = 26 and surname still Junior.
+
+## Types 
+
+### Parameter Typing
+
+In the parameters of methods and functions, we can add types so that PHP detects them at runtime and informs us.
+The types are:
+    string
+    boolean
+    object
+    integer
+    float
+    array
+    and many more. 
+
+PHP 8 also introduced the concept of mixed types, which is equivalent to "any" in TypeScript.
+
+By passing the type inside the function parameters, we can ensure that it will be of that type.
+
+    We can tell PHP to perform type conversion directly on the parameter by declaring, in the file that CALLS the function: declare(strict_types=1);
+
+### Union Types
+
+We use this implementation to indicate that the parameter can accept different types, but still valid for the operation.
+
+`function x(string|bool $param) {}`
+
+Here, we know that $param can be either a string or a bool. We can also specify the class type as a type hint, since we are creating a new object.
+
+`function x(ClassX|string|bool $param) {}`
+
+**Return Typing**
+
+We can also add the return type to our function/method. The types are the same as those already mentioned.
+
+There is one type that can be used in the return but not in the function parameters: void.
+This type indicates that the function does not return anything, meaning it can be basically a set function — for example, setPrice.
+
+## Inheritance
+
+When we create a class, we can extend its functionality to another, which is called inheritance.
+See:
+
+`class B extends A {}`
+
+Our class is inheriting all the methods — public and protected — from the parent class, since private methods cannot be accessed by the child class.
+
+In case of any changes to the constructor of the child class, we call the parent's constructor:
+`parent::__construct()`
+We are responsible for passing the correct information to the parent class.
+
+We must call it before defining our methods and parameters.
+
+### Security
+
+To ensure the security of a class's information, we must properly manage the visibility of its properties and methods — public, private, or protected.
+
+Public and protected can be accessed from outside the parent class, unlike private.
+
+By doing this, we can also add accessor methods, which do not allow direct access to the methods and properties.
